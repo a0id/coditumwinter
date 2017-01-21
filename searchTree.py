@@ -68,8 +68,16 @@ class BST:
             self.printHR(self.head, 0)
             
     def removeR(self, value, node):
-        if node.right == None and node.left == None: # Case One: Removing a Leaf
-            
+        if node.left.data == value or node.right.data == value: # Stops at parent node
+            if node.right.data == value:
+                tempNode = node.right
+            elif node.left.data == value:
+                tempNode = node.left
+            if tempNode.right == None and tempNode.left == None: # Case One: Removing Leaf
+                if node.right.data == value:
+                    node.right = None
+                elif node.left.data == value:
+                    node.left = None
         elif node != None and node.data < value:
             self.removeR(value, node.left)
         elif node != None and node.data > value:
