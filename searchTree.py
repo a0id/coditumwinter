@@ -1,4 +1,3 @@
-from test.test_iterlen import NoneLengthHint
 class Node:
     def __init__(self):
         self.left = None
@@ -69,14 +68,11 @@ class BST:
             self.printHR(self.head, 0)
             
     def removeR(self, value, node):
-        if node == value:
-            if node.right == None and node.left == None:
-                
-            while True:
-                
-        elif node < value:
+        if node.right == None and node.left == None: # Case One: Removing a Leaf
+            
+        elif node != None and node.data < value:
             self.removeR(value, node.left)
-        elif node > value:
+        elif node != None and node.data > value:
             self.removeR(value, node.right)
     def remove(self, value):
         self.removeR(value, self.head)
