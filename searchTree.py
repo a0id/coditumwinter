@@ -72,12 +72,20 @@ class BST:
             if node.right.data == value:
                 tempNode = node.right
             elif node.left.data == value:
-                tempNode = node.left
+                tempNode = node.left # Stops at parent nodes
             if tempNode.right == None and tempNode.left == None: # Case One: Removing Leaf
                 if node.right.data == value:
                     node.right = None
                 elif node.left.data == value:
                     node.left = None
+            if tempNode.right != None: # Case Two: Replacement is a Leaf
+                tempNode = tempNode.right
+            while True:
+                if tempNode.left != None:
+                    tempNode = tempNode.left
+                break
+            node.data = tempNode.data
+            
         elif node != None and node.data < value:
             self.removeR(value, node.left)
         elif node != None and node.data > value:
