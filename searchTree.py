@@ -52,7 +52,6 @@ class BST:
             return self.searchR(value, node.right)
     def search(self, value):
         return self.searchR(value, self.head)
-    
     def printHR(self, node, tab):
         if node.right != None:
             self.printHR(node.right, tab+1)
@@ -68,27 +67,24 @@ class BST:
             self.printHR(self.head, 0)
             
     def removeR(self, value, node):
-        if node.left.data == value or node.right.data == value: # Stops at parent node
-            if node.right.data == value:
-                tempNode = node.right
-            elif node.left.data == value:
-                tempNode = node.left # Stops at parent nodes
-            if tempNode.right == None and tempNode.left == None: # Case One: Removing Leaf
-                if node.right.data == value:
-                    node.right = None
-                elif node.left.data == value:
-                    node.left = None
-            if tempNode.right != None: # Case Two: Replacement is a Leaf
-                tempNode = tempNode.right
-            while True:
-                if tempNode.left != None:
-                    tempNode = tempNode.left
-                break
-            node.data = tempNode.data
-            
-        elif node != None and node.data < value:
-            self.removeR(value, node.left)
-        elif node != None and node.data > value:
-            self.removeR(value, node.right)
+        if node.data == value:
+            if node.left == None and node.right == None: # Case One: Leaf
+                return None
+            elif node.left or node.right != None: # Case Two: One child
+                if node.left:
+                    return node.left
+                else:
+                    return node.right
+            elif node.left and node.right != None: # Case Three: Two Children
+                if node.right == None:
+                    newNode = node.left
+                if node.right != None:
+                    return node.right
+        elif value > node.data: # If it is to the right
+            node.right = self.removeR(value, node.right)
+            return node
+        elif value < node.data: # If it is to the left
+            node.left = self.removeR(value, node.left)
+            return node
     def remove(self, value):
         self.removeR(value, self.head)
