@@ -1,3 +1,4 @@
+from distutils.tests import here
 class Node:
     def __init__(self):
         self.left = None
@@ -70,16 +71,19 @@ class BST:
         if node.data == value:
             if node.left == None and node.right == None: # Case One: Leaf
                 return None
-            elif node.left or node.right != None: # Case Two: One child
+            elif node.left != None or node.right != None: # Case Two: One child
                 if node.left:
                     return node.left
                 else:
                     return node.right
-            elif node.left and node.right != None: # Case Three: Two Children
-                if node.right == None:
-                    newNode = node.left
+            elif node.left != None and node.right != None: # Case Three: Two Children
                 if node.right != None:
-                    return node.right
+                    switchMe = node.data
+                while True:
+                    if node.left != None:
+                        tempNode = node.left.data
+                self.removeR(switchMe, self.head)
+                
         elif value > node.data: # If it is to the right
             node.right = self.removeR(value, node.right)
             return node
