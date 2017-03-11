@@ -71,19 +71,21 @@ class BST:
         if node.data == value:
             if node.left == None and node.right == None: # Case One: Leaf
                 return None
+            elif node.left != None and node.right != None: # Case Three: Two Children
+                switch = node.right
+                while switch.left != None:
+                    switch = switch.left
+                oldNode = node.data
+                node.data = switch.data
+                switch.data = oldNode
+                node.right = self.removeR(switch.data, node.right)
+                return node
             elif node.left != None or node.right != None: # Case Two: One child
                 if node.left:
                     return node.left
                 else:
                     return node.right
-            elif node.left != None and node.right != None: # Case Three: Two Children
-                if node.right != None:
-                    switchMe = node.data
-                while True:
-                    if node.left != None:
-                        tempNode = node.left.data
-                self.removeR(switchMe, self.head)
-                
+
         elif value > node.data: # If it is to the right
             node.right = self.removeR(value, node.right)
             return node
