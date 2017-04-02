@@ -12,6 +12,7 @@ class minHeap():
                 index = x
                 break
         self.bubbleDownR(index)
+        self.tree.remove(self.tree[len(self.tree)-1])
     def printer(self):
         for x in range(len(self.tree)):
             print(str(self.tree[x]) + " ")
@@ -42,7 +43,6 @@ class minHeap():
             temp = self.tree[p]
             self.tree[len(self.tree)] = self.tree[index]
             self.tree[index] = temp
-            self.tree.remove(len(self.tree))
     def getParent(self, index):
         parent = 0
         if index % 2 == 0:
@@ -52,3 +52,7 @@ class minHeap():
         return int(parent)
     def getChild(self, index): # Returns left child index, add one for right child index
         return int(index*2+1)
+    def getMin(self):
+        x = self.tree[0]
+        self.remove(x)
+        return x
