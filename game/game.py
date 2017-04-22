@@ -7,6 +7,7 @@ class Wall():
         self.x,self.y = 0,0
         self.img = pyglet.image.load("img/wall/wall.jpg")
         self.wall = pyglet.sprite.Sprite(self.img, x=self.x, y=self.y)
+        self.hp = 10
         if placement == "top":
             self.x = 628
             self.y = 0
@@ -27,6 +28,14 @@ class Laser():
         self.right = False
         self.img = [pyglet.image.load("img/lasers/right.jpg"), pyglet.image.load("img/lasers/left.jpg")]
         self.lasers = pyglet.sprite.Sprite(self.img[0], x=self.x, y=self.y)
+    def detect(self):
+        if self.laser.x + self.width > wall.x:
+            if wall.hp == 0:
+                wall.disappear()
+            else:
+                wall.hp -=1
+            
+        
     def move(self):
         if self.left == True:
             self.lasers = pyglet.sprite.Sprite(self.img[1], x=self.x, y=self.y)
@@ -42,6 +51,7 @@ def moveLaser(dt):
     if lasers:
         for laser in lasers:
             laser.move()
+            laser.detect()
 class Character():
     def __init__(self, xx, yy, types, player):
         self.x = xx
