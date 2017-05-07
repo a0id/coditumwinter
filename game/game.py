@@ -1,7 +1,7 @@
-import pyglet
+import pyglet, webbrowser
 from pyglet.window import key
-from random import randint
-
+import random 
+from os import system
 class Wall():
     def __init__(self, placement):
         self.x,self.y = 0,0
@@ -28,14 +28,11 @@ class Laser():
         self.right = False
         self.img = [pyglet.image.load("img/lasers/right.jpg"), pyglet.image.load("img/lasers/left.jpg")]
         self.lasers = pyglet.sprite.Sprite(self.img[0], x=self.x, y=self.y)
+        self.detected = False
     def detect(self):
-        if self.laser.x + self.width > wall.x:
-            if wall.hp == 0:
-                wall.disappear()
-            else:
-                wall.hp -=1
-            
-        
+        if self.x + self.width > wall.x and not self.detected:
+            self.detected= True
+            wall.hp-=1
     def move(self):
         if self.left == True:
             self.lasers = pyglet.sprite.Sprite(self.img[1], x=self.x, y=self.y)
@@ -89,11 +86,18 @@ class Character():
 window = pyglet.window.Window(1280, 480)
 window.set_caption("Backslash")
 
-choices = ["up", "down", "left", "right"]
-
 background = Background()
 char = Character(50, 50, "user", "mexico")
 enemy = Character(50,50, "enemy", None)
+def emove():
+    if enemy.y == 465 or enemy.y == 10:
+        enemy.up = not enemy.up
+        enemy.down = not enemy.down
+    else:
+        rand = random.randint(1, 30)
+        if rand == 17:
+            enemy.up = not enemy.up
+            enemy.down = not enemy.down
 wall = Wall("top")
 keys = key.KeyStateHandler()
 window.push_handlers(keys)
@@ -104,16 +108,13 @@ def on_draw():
     window.clear()
     background.background.draw()
     char.character.draw()
-    wall.wall.draw()
-    x = randint(0,3)
-    if choices[x] == "up":
-        enemy.up = True
-    if choices[x] == "down":
-        enemy.down = True
-    if choices[x] == "left":
-        enemy.left = True
-    if choices[x] == "right":
-        enemy.right = True
+    if wall.hp >= 0:
+        wall.wall.draw()
+    if wall.hp == 0:
+        system("say boooooom! Crash! Congratulation! You Won!")
+        url = "http://bit.ly/2pQfcnL"
+        webbrowser.open(url)
+        
     enemy.character.draw()
     for x in range(len(lasers)):
         lasers[x].lasers.draw()
@@ -152,5 +153,5 @@ def on_key_release(symbol, modifiers):
         char.right = False
 pyglet.clock.schedule_interval(moveLaser, 1/60.0)
 pyglet.clock.schedule_interval(char.move, 1/60.0)
-pyglet.clock.schedule_interval(enemy.move, 1/60.0)
+pyglet.clock.schedule_interval(emove, 1/60.0)
 pyglet.app.run()
